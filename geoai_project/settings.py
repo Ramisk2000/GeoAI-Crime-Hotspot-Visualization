@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+GDAL_LIBRARY_PATH = os.path.join("C:/Program Files/QGIS 3.34.13/bin/gdal309.dll")
+GEOS_LIBRARY_PATH = "C:/Program Files/QGIS 3.34.13/bin/geos_c.dll"  # Update this to your actual path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +33,11 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React frontend URL
+]
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -37,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "geoai_app",
 ]
 
@@ -48,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # Enable CORS
 ]
 
 ROOT_URLCONF = "geoai_project.urls"
@@ -77,9 +87,9 @@ WSGI_APPLICATION = "geoai_project.wsgi.application"
 DATABASES = {
     "default": {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'crime_data',
+        'NAME': 'geoai_project',
         'USER': 'postgres',
-        'PASSWORD': 'rami',
+        'PASSWORD': 'azerty',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -127,3 +137,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+

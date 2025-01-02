@@ -16,10 +16,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from . import views
+from django.urls import path, include
 
 urlpatterns = [
-    path('api/crime-data/', views.get_crime_data, name='get_crime_data'),
-    path('api/clusters/', views.get_clusters, name='get_clusters'),
+    path('admin/', admin.site.urls),
+    path('api/', include('geoai_app.urls')),  # Include app-specific URLs
 ]
