@@ -1,57 +1,83 @@
 from django.http import JsonResponse
-from django.db import connection
 from .models import CrimeData
 from django.core.paginator import Paginator
 
+# API to fetch all crime data
 def get_crime_data(request):
-    crimes = CrimeData.objects.all()
-    paginator = Paginator(crimes, 10)  # 10 records per page
-    page_number = request.GET.get('page', 1)
-    page = paginator.get_page(page_number)
+    crimes = CrimeData.objects.all()[:10]  # Return only 100 rows for testing
     data = [
         {
-            "id": crime.id,
-            "violation": crime.primviolat,
-            "summary": crime.offsummary,
-            "neighborhood": crime.neighbourhood,
+            "id": crime.ogc_fid,
+            "fid": crime.fid,
+            "year": crime.year,
             "report_date": crime.reportdate,
             "occur_date": crime.occurdate,
             "weekday": crime.weekday,
-            "longitude": crime.wkb_geometry.x,
-            "latitude": crime.wkb_geometry.y,
-        }
-        for crime in page
-    ]
-    return JsonResponse({"data": data, "total_pages": paginator.num_pages}, safe=False)
-
-
-def filter_crime_data(request):
-    crime_type = request.GET.get('type', None)
-    start_date = request.GET.get('start_date', None)
-    end_date = request.GET.get('end_date', None)
-    neighborhood = request.GET.get('neighborhood', None)
-
-    filters = {}
-    if crime_type:
-        filters['primviolat'] = crime_type
-    if start_date and end_date:
-        filters['occurdate__range'] = (start_date, end_date)
-    if neighborhood:
-        filters['neighbourhood'] = neighborhood
-
-    crimes = CrimeData.objects.filter(**filters)
-    data = [
-        {
-            "id": crime.id,
-            "violation": crime.primviolat,
             "summary": crime.offsummary,
-            "neighborhood": crime.neighbourhood,
-            "report_date": crime.reportdate,
-            "occur_date": crime.occurdate,
-            "weekday": crime.weekday,
+            "violation": crime.primviolat,
+            "neighborhood": crime.neighbourh,
+            "sector": crime.sector,
+            "division": crime.division,
+            "census_tract": crime.censustra,
             "longitude": crime.wkb_geometry.x,
             "latitude": crime.wkb_geometry.y,
         }
         for crime in crimes
     ]
     return JsonResponse(data, safe=False)
+
+# API to filter crime data
+
+
+
+def filter_crime_data(request):
+    crime_type = request.GET.get('primviolat', None)
+    date = request.GET.get('occurdate', None)
+    neighborhood = request.GET.get('neighborhood', None)
+    year = request.GET.get('year', None)
+
+    page_number = request.GET.get('page', 1)
+    items_per_page = request.GET.get('items_per_page', 100)  # Adjust as needed
+
+    filters = {}
+    if crime_type:
+        filters['primviolat'] = crime_type
+    if date: 
+        filters['occurdate'] = date
+    if neighborhood:
+        filters['neighbourh'] = neighborhood
+    if year:
+        filters['year'] = year
+
+    # Apply filters and paginate results
+    crimes = CrimeData.objects.filter(**filters)
+    paginator = Paginator(crimes, items_per_page)
+    page = paginator.get_page(page_number)
+
+    data = [
+        {
+            "id": crime.ogc_fid,
+            "fid": crime.fid,
+            "year": crime.year,
+            "report_date": crime.reportdate,
+            "occur_date": crime.occurdate,
+            "weekday": crime.weekday,
+            "summary": crime.offsummary,
+            "violation": crime.primviolat,
+            "neighborhood": crime.neighbourh,
+            "sector": crime.sector,
+            "division": crime.division,
+            "census_tract": crime.censustra,
+            "longitude": crime.wkb_geometry.x,
+            "latitude": crime.wkb_geometry.y,
+        }
+        for crime in page.object_list
+    ]
+
+    return JsonResponse({
+        "data": data,
+        "total_pages": paginator.num_pages,
+        "current_page": page.number,
+        "items_per_page": items_per_page,
+    })
+

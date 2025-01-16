@@ -13,8 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 GDAL_LIBRARY_PATH = os.path.join("C:/Program Files/QGIS 3.34.13/bin/gdal309.dll")
-GEOS_LIBRARY_PATH = "C:/Program Files/QGIS 3.34.13/bin/geos_c.dll"  # Update this to your actual path
-
+GEOS_LIBRARY_PATH = "C:/Program Files/QGIS 3.34.13/bin/geos_c.dll"  
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,10 +31,8 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React frontend URL
-]
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
 
 INSTALLED_APPS = [
@@ -50,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # Enable CORS
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -57,7 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # Enable CORS
+    
 ]
 
 ROOT_URLCONF = "geoai_project.urls"
@@ -138,5 +136,26 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 
 

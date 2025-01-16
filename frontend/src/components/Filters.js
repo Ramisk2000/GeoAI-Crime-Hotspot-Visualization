@@ -1,50 +1,53 @@
 import React, { useState } from 'react';
 
 const Filters = ({ onFilter }) => {
-  const [type, setType] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  // State for each filter
+  const [violation, setViolation] = useState('');
+  const [year, setYear] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
+  const [occurDate, setOccurDate] = useState('');
 
+  // Apply filters by passing them to the parent component
   const applyFilters = () => {
     const filters = {};
-    if (type) filters.type = type;
-    if (startDate) filters.start_date = startDate;
-    if (endDate) filters.end_date = endDate;
-    if (neighborhood) filters.neighborhood = neighborhood;
+    if (violation) filters.primviolat = violation; // Crime type
+    if (year) filters.year = year; // Year of the crime
+    if (neighborhood) filters.neighbourh = neighborhood; // Neighborhood
+    if (occurDate) filters.occurdate = occurDate; // Specific occurrence date
 
-    onFilter(filters); // Pass the filters object to the parent component
+    onFilter(filters); // Pass filters to the parent
   };
 
   return (
-    <div className="filters" style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px', marginBottom: '10px' }}>
+    <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px', marginBottom: '10px' }}>
       <h4>Filter Crime Data</h4>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <input
           type="text"
-          placeholder="Crime Type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          style={{ padding: '5px', borderRadius: '3px', border: '1px solid #ccc' }}
+          placeholder="Crime Type (e.g., Theft)"
+          value={violation}
+          onChange={(e) => setViolation(e.target.value)}
+          style={{ padding: '10px', borderRadius: '3px', border: '1px solid #ccc' }}
+        />
+        <input
+          type="number"
+          placeholder="Year (e.g., 2020)"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          style={{ padding: '10px', borderRadius: '3px', border: '1px solid #ccc' }}
         />
         <input
           type="text"
-          placeholder="Neighborhood"
+          placeholder="Neighborhood (e.g., Downtown)"
           value={neighborhood}
           onChange={(e) => setNeighborhood(e.target.value)}
-          style={{ padding: '5px', borderRadius: '3px', border: '1px solid #ccc' }}
+          style={{ padding: '10px', borderRadius: '3px', border: '1px solid #ccc' }}
         />
         <input
           type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          style={{ padding: '5px', borderRadius: '3px', border: '1px solid #ccc' }}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          style={{ padding: '5px', borderRadius: '3px', border: '1px solid #ccc' }}
+          value={occurDate}
+          onChange={(e) => setOccurDate(e.target.value)}
+          style={{ padding: '10px', borderRadius: '3px', border: '1px solid #ccc' }}
         />
         <button
           onClick={applyFilters}
