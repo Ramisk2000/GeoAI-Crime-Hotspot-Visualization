@@ -33,6 +33,11 @@ This application visualizes crime hotspots by analyzing historical crime data us
 - **GeoAI Tools:** PySAL, scikit-learn, geopandas
 - **Mapping Libraries:** Leaflet, Mapbox
 
+## Dataset Source
+The crime data used in this project is sourced from the [Open Ottawa Crime Dataset](https://open.ottawa.ca/datasets/03d5deb8b76a44b49e67987f15e0d8d6_0/explore). This dataset provides detailed historical crime data for Ottawa, which has been processed and analyzed to identify crime hotspots.
+
+
+
 ## Installation and Setup
 
 1: Clone the repository:
