@@ -35,31 +35,33 @@ This application visualizes crime hotspots by analyzing historical crime data us
 
 ## Installation and Setup
 
-1. Clone the repository:
+1: Clone the repository:
    ```bash
    git clone <repository_url>
    cd <project_directory>
+```
 
-
-
-   pip install -r requirements.txt
-
-# Step 2: Install Node.js dependencies
+2: Install Node.js dependencies
+ ```bash
 npm install
-
-# Step 3: Set up the database
-# Ensure PostgreSQL is running and create a database with PostGIS extension
+```
+3: Set up the database
+Ensure PostgreSQL is running and create a database with PostGIS extension
+ ```bash
 psql -U postgres -c "CREATE DATABASE crime_hotspots;"
 psql -U postgres -d crime_hotspots -c "CREATE EXTENSION postgis;"
-
-# Apply database migrations
+```
+Apply database migrations
+ ```bash
 python manage.py migrate
-
-# Step 4: Run the backend server
+```
+4: Run the backend server
+ ```bash
 python manage.py runserver
-
-# Step 5: Run the frontend server
+```
+5: Run the frontend server
+ ```bash
 npm start
-
-# Access the application
+```
+Access the application
 # Open a browser and go to: http://localhost:3000
